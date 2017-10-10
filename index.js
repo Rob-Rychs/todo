@@ -54,7 +54,11 @@ module.exports = (robot) => {
         if (!matches) return
 
         const titles = matches.map(title => title.replace(new RegExp(`${cfg.keyword} `, regexFlags), ''))
-        titles.forEach(async title => {
+        titles.forEach(async t => {
+          const titleExploded = t.split(' +')
+          const titleLabels = titleExploded.slice(1)
+          const title = titleExploded[0]
+
           // Check if an issue with that title exists
           const existingIssue = issues.find(issue => {
             if (!issue.body) return false
@@ -72,9 +76,13 @@ module.exports = (robot) => {
           }
 
           const pr = await commitIsInPR(context, sha)
-          const body = generateBody(context, cfg, title, file, contents, author, sha, pr)
+          const body = generateBody(context, cfg, t, file, contents, author, sha, pr)
 
-          const issueObj = { title, body, labels }
+          const issueObj = {
+            title,
+            body,
+            labels: titleLabels.length > 0 ? titleLabels : labels
+          }
           if (cfg.autoAssign === true) {
             issueObj.assignee = author
           } else if (typeof cfg.autoAssign === 'string') {
