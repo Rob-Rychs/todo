@@ -234,6 +234,21 @@ describe('todo', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('allows the user to specify labels', async () => {
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.labels)
+    const expectedBody = fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'labels.txt'), 'utf8')
+    expect(github.issues.create).toHaveBeenCalledWith({
+      title: 'This title has labels',
+      body: expectedBody,
+      owner: 'JasonEtco',
+      assignee: 'JasonEtco',
+      repo: 'test',
+      labels: ['example', 'label'],
+      number: undefined
+    })
+  })
+
   describe('installation', () => {
     let robotLog
     const {robot} = gimmeRobot()
