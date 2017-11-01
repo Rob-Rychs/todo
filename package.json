@@ -44,7 +44,8 @@
     "file-loader": "^1.1.5",
     "jest": "^21.2.1",
     "localtunnel": "^1.8.2",
-    "probot": "^3.0.0",
+    "probot": "probot/probot#use-http-server",
+    "probot-webhooks": "0.0.3",
     "serverless-offline": "^3.16.0",
     "serverless-webpack": "^3.1.1",
     "standard": "^10.0.3",
@@ -54,5 +55,10 @@
   "engines": {
     "node": ">= 8.6.0",
     "npm": ">= 5.0.0"
+  },
+  "probot": {
+    "apps": [
+      "probot-webhooks"
+    ]
   }
 }
